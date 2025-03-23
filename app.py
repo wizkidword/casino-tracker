@@ -181,6 +181,7 @@ st.markdown(
         background-color: rgba(0, 0, 0, 0.7);
         padding: 5px;
         box-sizing: border-box; /* Ensure padding doesn't increase size */
+        z-index: 1; /* Ensure the image is below the button */
     }
     div[data-testid="stImage"] img {
         width: 100%;
@@ -199,6 +200,7 @@ st.markdown(
         width: 125px;
         height: 125px;
         margin: 0 !important;
+        z-index: 2; /* Ensure the button is above the image */
     }
     div[data-testid="stButton"] button {
         position: absolute;

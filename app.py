@@ -2,7 +2,6 @@ import streamlit as st
 import json
 import os
 from PIL import Image
-import streamlit_analytics
 
 # SEO-friendly title (must be the first Streamlit command)
 st.set_page_config(
@@ -61,7 +60,8 @@ st.components.v1.html(
     """,
     height=0
 )
-    # File paths
+
+# File paths
 CASINO_FILE = 'casinos.json'
 DATA_FILE = 'casino_data.json'
 

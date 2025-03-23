@@ -1,3 +1,2 @@
 streamlit>=1.38.0
 pillow
-streamlit_analytics

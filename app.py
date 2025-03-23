@@ -155,7 +155,7 @@ with st.sidebar:
     else:
         st.write("Select a casino to view details.")
 
-# Global CSS for logo hover effect and invisible button overlay
+# Global CSS for logo hover effect, invisible button overlay, and text buttons
 st.markdown(
     """
     <style>
@@ -194,6 +194,27 @@ st.markdown(
         outline: none !important;
         box-shadow: none !important;
     }
+    /* Style for the text buttons below logos */
+    .casino-button {
+        display: inline-block;
+        width: 125px;
+        text-align: center;
+        padding: 5px 0;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: gold !important;
+        font-size: 14px;
+        font-weight: bold;
+        border: 1px solid gold;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        margin-top: 5px;
+    }
+    .casino-button:hover {
+        background-color: rgba(255, 215, 0, 0.2);
+        box-shadow: 0 0 10px gold;
+        color: white !important;
+    }
     </style>
     """,
     unsafe_allow_html=True
@@ -231,9 +252,24 @@ if casinos:
                 else:
                     st.write("Placeholder not found!")
 
-            # Invisible button overlay for click detection
+            # Invisible button overlay for click detection (logo click)
             st.button("", key=f"select_{name}", on_click=lambda n=name: st.session_state.update({'selected_casino': n}))
-            
-            st.markdown(f"[{name}]({url})", unsafe_allow_html=True)
+
+            # Styled text button below the logo
+            st.markdown(
+                f"""
+                <a href="{url}" target="_blank" style="text-decoration: none;">
+                    <div class="casino-button" onclick="document.getElementById('text_select_{name}').click();">
+                        {name}
+                    </div>
+                </a>
+                <script>
+                    document.getElementById('text_select_{name}').style.display = 'none';
+                </script>
+                """,
+                unsafe_allow_html=True
+            )
+            # Hidden button to handle the session state update when the text button is clicked
+            st.button("", key=f"text_select_{name}", on_click=lambda n=name: st.session_state.update({'selected_casino': n}), help="Hidden button for text click")
 else:
     st.write("No casinos yet—check back soon!")

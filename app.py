@@ -10,20 +10,53 @@ st.set_page_config(
     layout="wide"
 )
 
-# Add Google Analytics tracking code
+# Add Google Analytics tracking code with SPA support
 st.components.v1.html(
     """
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async crossorigin="anonymous" src="https://www.googletagmanager.com/gtag/js?id=G-RVJVWRK9BT"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-RVJVWRK9BT');
-      // Fallback to ensure the script loads
-      if (typeof gtag !== 'function') {
-        console.log('Google Analytics failed to load');
-      }
+      // Wait for the page to load before injecting the Google Analytics script
+      window.onload = function() {
+        setTimeout(function() {
+          // Create the gtag.js script tag
+          var gtagScript = document.createElement('script');
+          gtagScript.async = true;
+          gtagScript.crossorigin = 'anonymous';
+          gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-RVJVWRK9BT';
+          document.head.appendChild(gtagScript);
+
+          // Create the gtag config script
+          var configScript = document.createElement('script');
+          configScript.innerHTML = `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-RVJVWRK9BT', { 'send_page_view': false }); // Disable automatic page views
+            if (typeof gtag !== 'function') {
+              console.log('Google Analytics failed to load');
+            }
+
+            // Manually send a page view on initial load
+            gtag('event', 'page_view', {
+              page_title: document.title,
+              page_location: window.location.href,
+              page_path: window.location.pathname
+            });
+
+            // Listen for Streamlit messages to detect state changes
+            window.addEventListener('message', function(event) {
+              if (event.data && event.data.type === 'streamlit:set_component_value') {
+                // Send a page view event when the state changes (e.g., selected_casino changes)
+                gtag('event', 'page_view', {
+                  page_title: document.title,
+                  page_location: window.location.href + '?selected=' + (event.data.value || 'none'),
+                  page_path: window.location.pathname + '?selected=' + (event.data.value || 'none')
+                });
+              }
+            });
+          `;
+          document.head.appendChild(configScript);
+        }, 1000); // Delay of 1 second
+      };
     </script>
     """,
     height=0

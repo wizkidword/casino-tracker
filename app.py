@@ -245,33 +245,28 @@ if casinos:
             logo_path = f"static/{name.lower().replace(' ', '_')}.png"
             placeholder_path = "static/placeholder.png"
             
-            # Load image and apply casino-logo class
+            # Load image using st.image
             try:
                 if os.path.exists(logo_path):
-                    # Use st.markdown to render the image with the casino-logo class
-                    st.markdown(
-                        f'<div class="casino-logo"><img src="{logo_path}" width="125" height="125"></div>',
-                        unsafe_allow_html=True
-                    )
+                    # Add a unique class to the image container for CSS targeting
+                    st.markdown(f'<div class="casino-logo casino-logo-{name.lower().replace(" ", "_")}">', unsafe_allow_html=True)
+                    st.image(logo_path, width=125, use_container_width=False)
+                    st.markdown('</div>', unsafe_allow_html=True)
                 else:
                     st.write(f"Logo not found: {logo_path}")
                     if os.path.exists(placeholder_path):
-                        st.markdown(
-                            f'<div class="casino-logo"><img src="{placeholder_path}" width="125" height="125"></div>',
-                            unsafe_allow_html=True
-                        )
-                        st.caption("Image unavailable")
+                        st.markdown(f'<div class="casino-logo casino-logo-{name.lower().replace(" ", "_")}">', unsafe_allow_html=True)
+                        st.image(placeholder_path, width=125, use_container_width=False, caption="Image unavailable")
+                        st.markdown('</div>', unsafe_allow_html=True)
                     else:
                         st.write("Placeholder not found!")
             except Exception as e:
                 st.write(f"Error with {name}: {str(e)}")
                 if os.path.exists(placeholder_path):
                     try:
-                        st.markdown(
-                            f'<div class="casino-logo"><img src="{placeholder_path}" width="125" height="125"></div>',
-                            unsafe_allow_html=True
-                        )
-                        st.caption("Image unavailable")
+                        st.markdown(f'<div class="casino-logo casino-logo-{name.lower().replace(" ", "_")}">', unsafe_allow_html=True)
+                        st.image(placeholder_path, width=125, use_container_width=False, caption="Image unavailable")
+                        st.markdown('</div>', unsafe_allow_html=True)
                     except Exception as pe:
                         st.write(f"Placeholder error: {str(pe)}")
                 else:

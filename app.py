@@ -3,7 +3,14 @@ import json
 import os
 from PIL import Image
 
-# Add Google Analytics tracking code
+# SEO-friendly title (must be the first Streamlit command)
+st.set_page_config(
+    page_title="Best Free Social Casinos & Bonuses for 2025",
+    page_icon="🎰",
+    layout="wide"
+)
+
+# Add Google Analytics tracking code (after st.set_page_config)
 st.markdown(
     """
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -17,7 +24,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
 
 # File paths
 CASINO_FILE = 'casinos.json'
@@ -41,13 +47,6 @@ def load_casino_data():
 
 casinos = load_casinos()
 casino_data = load_casino_data()
-
-# SEO-friendly title
-st.set_page_config(
-    page_title="Best Free Social Casinos & Bonuses for 2025",
-    page_icon="🎰",
-    layout="wide"
-)
 
 # Main content
 st.title("Best Free Social Casinos & Bonuses for 2025")

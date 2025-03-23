@@ -165,9 +165,16 @@ st.markdown(
         align-items: center;
         margin-bottom: 20px; /* Add space between rows */
     }
-    .casino-logo {
+    .logo-button-container {
         position: relative;
-        display: inline-block;
+        width: 125px;
+        height: 125px;
+    }
+    /* Target the Streamlit image container */
+    div[data-testid="stImage"] {
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 125px;
         height: 125px;
         cursor: pointer;
@@ -178,19 +185,27 @@ st.markdown(
         padding: 5px;
         box-sizing: border-box; /* Ensure padding doesn't increase size */
     }
-    .casino-logo img {
+    div[data-testid="stImage"] img {
         width: 100%;
         height: 100%;
         object-fit: contain; /* Ensure the image fits within the container */
         border-radius: 8px; /* Match the border-radius of the container */
     }
-    .casino-logo:hover {
+    div[data-testid="stImage"]:hover {
         opacity: 1;
         box-shadow: 0 0 15px gold, 0 0 30px rgba(255, 215, 0, 0.5);
     }
+    div[data-testid="stButton"] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 125px;
+        height: 125px;
+        margin: 0 !important;
+    }
     div[data-testid="stButton"] button {
         position: absolute;
-        top: -125px;
+        top: 0;
         left: 0;
         width: 125px;
         height: 125px;
@@ -245,28 +260,24 @@ if casinos:
             logo_path = f"static/{name.lower().replace(' ', '_')}.png"
             placeholder_path = "static/placeholder.png"
             
+            # Wrap the image and button in a container to control positioning
+            st.markdown('<div class="logo-button-container">', unsafe_allow_html=True)
+            
             # Load image using st.image
             try:
                 if os.path.exists(logo_path):
-                    # Add a unique class to the image container for CSS targeting
-                    st.markdown(f'<div class="casino-logo casino-logo-{name.lower().replace(" ", "_")}">', unsafe_allow_html=True)
                     st.image(logo_path, width=125, use_container_width=False)
-                    st.markdown('</div>', unsafe_allow_html=True)
                 else:
                     st.write(f"Logo not found: {logo_path}")
                     if os.path.exists(placeholder_path):
-                        st.markdown(f'<div class="casino-logo casino-logo-{name.lower().replace(" ", "_")}">', unsafe_allow_html=True)
                         st.image(placeholder_path, width=125, use_container_width=False, caption="Image unavailable")
-                        st.markdown('</div>', unsafe_allow_html=True)
                     else:
                         st.write("Placeholder not found!")
             except Exception as e:
                 st.write(f"Error with {name}: {str(e)}")
                 if os.path.exists(placeholder_path):
                     try:
-                        st.markdown(f'<div class="casino-logo casino-logo-{name.lower().replace(" ", "_")}">', unsafe_allow_html=True)
                         st.image(placeholder_path, width=125, use_container_width=False, caption="Image unavailable")
-                        st.markdown('</div>', unsafe_allow_html=True)
                     except Exception as pe:
                         st.write(f"Placeholder error: {str(pe)}")
                 else:
@@ -274,6 +285,9 @@ if casinos:
 
             # Invisible button overlay for click detection (logo click to update sidebar)
             st.button("", key=f"select_{name}", on_click=lambda n=name: st.session_state.update({'selected_casino': n}))
+
+            # Close the logo-button container
+            st.markdown('</div>', unsafe_allow_html=True)
 
             # Styled text button below the logo (only opens URL in new tab)
             st.markdown(

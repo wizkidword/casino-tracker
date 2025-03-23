@@ -3,6 +3,22 @@ import json
 import os
 from PIL import Image
 
+# Add Google Analytics tracking code
+st.markdown(
+    """
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1XSXPYSSWN"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-1XSXPYSSWN');
+    </script>
+    """,
+    unsafe_allow_html=True
+)
+
+
 # File paths
 CASINO_FILE = 'casinos.json'
 DATA_FILE = 'casino_data.json'

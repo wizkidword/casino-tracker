@@ -14,15 +14,19 @@ st.set_page_config(
 st.components.v1.html(
     """
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RVJVWRK9BT"></script>
+    <script async crossorigin="anonymous" src="https://www.googletagmanager.com/gtag/js?id=G-RVJVWRK9BT"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-RVJVWRK9BT');
+      // Fallback to ensure the script loads
+      if (typeof gtag !== 'function') {
+        console.log('Google Analytics failed to load');
+      }
     </script>
     """,
-    height=0  # Set height to 0 since this is a script, not visible content
+    height=0
 )
 
 # File paths

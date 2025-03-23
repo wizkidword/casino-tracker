@@ -1,7 +1,6 @@
 import streamlit as st
 import json
 import os
-from PIL import Image
 
 # SEO-friendly title (must be the first Streamlit command)
 st.set_page_config(
@@ -51,148 +50,36 @@ st.markdown(
     [data-testid="stSidebar"] * {
         color: gold !important;
     }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-# Add Google Analytics tracking code manually
-st.components.v1.html(
-    """
-    <script>
-      // Wait for the page to load before injecting the Google Analytics script
-      window.onload = function() {
-        setTimeout(function() {
-          // Create the gtag.js script tag
-          var gtagScript = document.createElement('script');
-          gtagScript.async = true;
-          gtagScript.crossorigin = 'anonymous';
-          gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-RVJVWRK9BT';
-          document.head.appendChild(gtagScript);
-
-          // Create the gtag config script
-          var configScript = document.createElement('script');
-          configScript.innerHTML = `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-RVJVWRK9BT', { 'send_page_view': false });
-            if (typeof gtag !== 'function') {
-              console.log('Google Analytics failed to load');
-            }
-
-            // Manually send a page view on initial load
-            gtag('event', 'page_view', {
-              page_title: document.title,
-              page_location: window.location.href,
-              page_path: window.location.pathname
-            });
-
-            // Listen for Streamlit messages to detect state changes
-            window.addEventListener('message', function(event) {
-              if (event.data && event.data.type === 'streamlit:set_component_value') {
-                gtag('event', 'page_view', {
-                  page_title: document.title,
-                  page_location: window.location.href + '?selected=' + (event.data.value || 'none'),
-                  page_path: window.location.pathname + '?selected=' + (event.data.value || 'none')
-                });
-              }
-            });
-          `;
-          document.head.appendChild(configScript);
-        }, 1000);
-      };
-    </script>
-    """,
-    height=0
-)
-
-# File paths
-CASINO_FILE = 'casinos.json'
-DATA_FILE = 'casino_data.json'
-
-# Load casino data
-def load_casinos():
-    if os.path.exists(CASINO_FILE):
-        with open(CASINO_FILE, 'r') as f:
-            return json.load(f)
-    return {
-        "Slotomania": "https://www.slotomania.com/?ref=your_ref_link",
-        "DoubleDown Casino": "https://www.doubledowncasino.com/?ref=your_ref_link",
-    }
-
-def load_casino_data():
-    if os.path.exists(DATA_FILE):
-        with open(DATA_FILE, 'r') as f:
-            return json.load(f)
-    return {}
-
-casinos = load_casinos()
-casino_data = load_casino_data()
-
-# Main content
-st.title("Best Free Social Casinos & Bonuses for 2025")
-
-# Add a hidden input to capture the selected casino
-if 'selected_casino' not in st.session_state:
-    st.session_state.selected_casino = None
-
-# Sidebar with centered title
-with st.sidebar:
-    # Debug log for session state
-    st.write(f"Current selected_casino: {st.session_state.get('selected_casino', 'None')}")
-    
-    if st.session_state.get('selected_casino') and st.session_state.selected_casino in casinos:
-        # Center the header with CSS
-        st.markdown(
-            f"<h2 style='text-align: center;'>{st.session_state.selected_casino}</h2>",
-            unsafe_allow_html=True
-        )
-        st.write(f"**Signup:** [Get Your Bonus Here]({casinos[st.session_state.selected_casino]})")
-        st.write(f"**Free Daily SC:** {casino_data.get(st.session_state.selected_casino, {}).get('free_daily_sc', 'N/A')}")
-        st.write(f"**Daily Amount:** {casino_data.get(st.session_state.selected_casino, {}).get('daily_amount', 'N/A')}")
-        st.write(f"**Min. Cash Redeem:** {casino_data.get(st.session_state.selected_casino, {}).get('min_cash_redeem', 'N/A')}")
-        st.write(f"**Gift Cards:** {casino_data.get(st.session_state.selected_casino, {}).get('gift_cards', 'N/A')}")
-        st.write(f"**Crypto:** {casino_data.get(st.session_state.selected_casino, {}).get('crypto', 'N/A')}")
-        st.write(f"**VIP System:** {casino_data.get(st.session_state.selected_casino, {}).get('vip_system', 'N/A')}")
-        st.write(f"**Farm VIP w/GC:** {casino_data.get(st.session_state.selected_casino, {}).get('farm_vip_with_gc', 'N/A')}")
-        st.write(f"**Notes:** {casino_data.get(st.session_state.selected_casino, {}).get('notes', 'No notes available.')}")
-    else:
-        st.write("Select a casino to view details.")
-
-# Global CSS for logo hover effect, text buttons, and hidden button
-st.markdown(
-    """
-    <style>
+    /* Style for the casino container */
     .casino-container {
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-bottom: 20px; /* Add space between rows */
+        margin-bottom: 20px;
     }
+    /* Style for the logo container */
     .logo-button-container {
         position: relative;
         width: 125px;
-        height: 125px; /* Ensure the container has enough height for the image */
-        cursor: pointer; /* Indicate the container is clickable */
+        height: 125px;
+        cursor: pointer;
     }
     /* Target the Streamlit image container */
     div[data-testid="stImage"] {
-        width: 125px;
-        height: 125px;
+        width: 125px !important;
+        height: 125px !important;
         transition: all 0.3s ease;
         border: 2px solid gold;
         border-radius: 10px;
         background-color: rgba(0, 0, 0, 0.7);
         padding: 5px;
-        box-sizing: border-box; /* Ensure padding doesn't increase size */
-        z-index: 1; /* Ensure the image is below the button */
+        box-sizing: border-box;
     }
     div[data-testid="stImage"] img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain; /* Ensure the image fits within the container */
-        border-radius: 8px; /* Match the border-radius of the container */
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain;
+        border-radius: 8px;
     }
     div[data-testid="stImage"]:hover {
         opacity: 1;
@@ -200,7 +87,7 @@ st.markdown(
     }
     /* Style for the text button container */
     .text-button-container {
-        z-index: 2; /* Ensure the text button container is above the logo */
+        z-index: 2;
     }
     /* Style for the text buttons below logos */
     .casino-button {
@@ -216,7 +103,7 @@ st.markdown(
         border-radius: 5px;
         transition: all 0.3s ease;
         cursor: pointer;
-        margin-top: 10px; /* Increased space between logo and button */
+        margin-top: 10px;
     }
     .casino-button:hover {
         background-color: rgba(255, 215, 0, 0.2);
@@ -241,6 +128,66 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# File paths
+CASINO_FILE = 'casinos.json'
+DATA_FILE = 'casino_data.json'
+
+# Load casino data with error handling
+def load_casinos():
+    try:
+        if os.path.exists(CASINO_FILE):
+            with open(CASINO_FILE, 'r') as f:
+                return json.load(f)
+        return {
+            "Slotomania": "https://www.slotomania.com/?ref=your_ref_link",
+            "DoubleDown Casino": "https://www.doubledowncasino.com/?ref=your_ref_link",
+        }
+    except Exception as e:
+        st.error(f"Error loading casinos.json: {e}")
+        return {
+            "Slotomania": "https://www.slotomania.com/?ref=your_ref_link",
+            "DoubleDown Casino": "https://www.doubledowncasino.com/?ref=your_ref_link",
+        }
+
+def load_casino_data():
+    try:
+        if os.path.exists(DATA_FILE):
+            with open(DATA_FILE, 'r') as f:
+                return json.load(f)
+        return {}
+    except Exception as e:
+        st.error(f"Error loading casino_data.json: {e}")
+        return {}
+
+casinos = load_casinos()
+casino_data = load_casino_data()
+
+# Main content
+st.title("Best Free Social Casinos & Bonuses for 2025")
+
+# Add a hidden input to capture the selected casino
+if 'selected_casino' not in st.session_state:
+    st.session_state.selected_casino = None
+
+# Sidebar with centered title
+with st.sidebar:
+    if st.session_state.get('selected_casino') and st.session_state.selected_casino in casinos:
+        st.markdown(
+            f"<h2 style='text-align: center;'>{st.session_state.selected_casino}</h2>",
+            unsafe_allow_html=True
+        )
+        st.write(f"**Signup:** [Get Your Bonus Here]({casinos[st.session_state.selected_casino]})")
+        st.write(f"**Free Daily SC:** {casino_data.get(st.session_state.selected_casino, {}).get('free_daily_sc', 'N/A')}")
+        st.write(f"**Daily Amount:** {casino_data.get(st.session_state.selected_casino, {}).get('daily_amount', 'N/A')}")
+        st.write(f"**Min. Cash Redeem:** {casino_data.get(st.session_state.selected_casino, {}).get('min_cash_redeem', 'N/A')}")
+        st.write(f"**Gift Cards:** {casino_data.get(st.session_state.selected_casino, {}).get('gift_cards', 'N/A')}")
+        st.write(f"**Crypto:** {casino_data.get(st.session_state.selected_casino, {}).get('crypto', 'N/A')}")
+        st.write(f"**VIP System:** {casino_data.get(st.session_state.selected_casino, {}).get('vip_system', 'N/A')}")
+        st.write(f"**Farm VIP w/GC:** {casino_data.get(st.session_state.selected_casino, {}).get('farm_vip_with_gc', 'N/A')}")
+        st.write(f"**Notes:** {casino_data.get(st.session_state.selected_casino, {}).get('notes', 'No notes available.')}")
+    else:
+        st.write("Select a casino to view details.")
+
 # Casino grid
 if casinos:
     cols = st.columns(6)
@@ -259,18 +206,18 @@ if casinos:
             # Load image using st.image
             try:
                 if os.path.exists(logo_path):
-                    st.image(logo_path, width=125, use_container_width=False)
+                    st.image(logo_path, width=125)
                 else:
                     st.write(f"Logo not found: {logo_path}")
                     if os.path.exists(placeholder_path):
-                        st.image(placeholder_path, width=125, use_container_width=False, caption="Image unavailable")
+                        st.image(placeholder_path, width=125, caption="Image unavailable")
                     else:
                         st.write("Placeholder not found!")
             except Exception as e:
                 st.write(f"Error with {name}: {str(e)}")
                 if os.path.exists(placeholder_path):
                     try:
-                        st.image(placeholder_path, width=125, use_container_width=False, caption="Image unavailable")
+                        st.image(placeholder_path, width=125, caption="Image unavailable")
                     except Exception as pe:
                         st.write(f"Placeholder error: {str(pe)}")
                 else:
@@ -283,11 +230,11 @@ if casinos:
             # Close the logo-button container
             st.markdown('</div>', unsafe_allow_html=True)
 
-            # Styled text button below the logo (only opens URL in new tab)
+            # Text button below the logo (opens URL in new tab)
             st.markdown(
                 f"""
                 <div class="text-button-container">
-                    <a href="{url}" target="_blank" style="text-decoration: none;" onclick="event.stopPropagation();">
+                    <a href="{url}" target="_blank" style="text-decoration: none;">
                         <div class="casino-button">
                             {name}
                         </div>

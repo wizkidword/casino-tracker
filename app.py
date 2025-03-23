@@ -10,6 +10,44 @@ st.set_page_config(
     layout="wide"
 )
 
+# Add casino-themed background with overlay and text color adjustments
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-image: url('https://images.unsplash.com/photo-1597929447902-80d94c77c50c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+    }
+    /* Add a semi-transparent overlay to improve text readability */
+    .stApp::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6); /* Dark overlay with 60% opacity */
+        z-index: -1;
+    }
+    /* Adjust text colors for better contrast */
+    h1, h2, h3, p, div, span, a {
+        color: #f0f0f0 !important; /* Light gray/white text for readability */
+    }
+    /* Style the sidebar with a dark background */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(to bottom, #1a1a1a, #333333);
+    }
+    /* Ensure sidebar text is readable */
+    [data-testid="stSidebar"] * {
+        color: gold !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Add Google Analytics tracking code manually
 st.components.v1.html(
     """

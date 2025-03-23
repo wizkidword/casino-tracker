@@ -11,11 +11,59 @@ st.set_page_config(
     layout="wide"
 )
 
-# Start tracking with streamlit_analytics
-with streamlit_analytics.track(ga_id="G-RVJVWRK9BT"):
+# Add Google Analytics tracking code manually
+st.components.v1.html(
+    """
+    <script>
+      // Wait for the page to load before injecting the Google Analytics script
+      window.onload = function() {
+        setTimeout(function() {
+          // Create the gtag.js script tag
+          var gtagScript = document.createElement('script');
+          gtagScript.async = true;
+          gtagScript.crossorigin = 'anonymous';
+          gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-RVJVWRK9BT';
+          document.head.appendChild(gtagScript);
+
+          // Create the gtag config script
+          var configScript = document.createElement('script');
+          configScript.innerHTML = `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-RVJVWRK9BT', { 'send_page_view': false });
+            if (typeof gtag !== 'function') {
+              console.log('Google Analytics failed to load');
+            }
+
+            // Manually send a page view on initial load
+            gtag('event', 'page_view', {
+              page_title: document.title,
+              page_location: window.location.href,
+              page_path: window.location.pathname
+            });
+
+            // Listen for Streamlit messages to detect state changes
+            window.addEventListener('message', function(event) {
+              if (event.data && event.data.type === 'streamlit:set_component_value') {
+                gtag('event', 'page_view', {
+                  page_title: document.title,
+                  page_location: window.location.href + '?selected=' + (event.data.value || 'none'),
+                  page_path: window.location.pathname + '?selected=' + (event.data.value || 'none')
+                });
+              }
+            });
+          `;
+          document.head.appendChild(configScript);
+        }, 1000);
+      };
+    </script>
+    """,
+    height=0
+)
     # File paths
-    CASINO_FILE = 'casinos.json'
-    DATA_FILE = 'casino_data.json'
+CASINO_FILE = 'casinos.json'
+DATA_FILE = 'casino_data.json'
 
 # Load casino data
 def load_casinos():

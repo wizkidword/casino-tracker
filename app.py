@@ -176,6 +176,13 @@ st.markdown(
         border-radius: 10px;
         background-color: rgba(0, 0, 0, 0.7);
         padding: 5px;
+        box-sizing: border-box; /* Ensure padding doesn't increase size */
+    }
+    .casino-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* Ensure the image fits within the container */
+        border-radius: 8px; /* Match the border-radius of the container */
     }
     .casino-logo:hover {
         opacity: 1;
@@ -238,24 +245,33 @@ if casinos:
             logo_path = f"static/{name.lower().replace(' ', '_')}.png"
             placeholder_path = "static/placeholder.png"
             
-            # Load image
+            # Load image and apply casino-logo class
             try:
                 if os.path.exists(logo_path):
-                    img = Image.open(logo_path)
-                    st.image(img, width=125, use_container_width=False)
+                    # Use st.markdown to render the image with the casino-logo class
+                    st.markdown(
+                        f'<div class="casino-logo"><img src="{logo_path}" width="125" height="125"></div>',
+                        unsafe_allow_html=True
+                    )
                 else:
                     st.write(f"Logo not found: {logo_path}")
                     if os.path.exists(placeholder_path):
-                        placeholder = Image.open(placeholder_path)
-                        st.image(placeholder, width=125, use_container_width=False, caption="Image unavailable")
+                        st.markdown(
+                            f'<div class="casino-logo"><img src="{placeholder_path}" width="125" height="125"></div>',
+                            unsafe_allow_html=True
+                        )
+                        st.caption("Image unavailable")
                     else:
                         st.write("Placeholder not found!")
             except Exception as e:
                 st.write(f"Error with {name}: {str(e)}")
                 if os.path.exists(placeholder_path):
                     try:
-                        placeholder = Image.open(placeholder_path)
-                        st.image(placeholder, width=125, use_container_width=False, caption="Image unavailable")
+                        st.markdown(
+                            f'<div class="casino-logo"><img src="{placeholder_path}" width="125" height="125"></div>',
+                            unsafe_allow_html=True
+                        )
+                        st.caption("Image unavailable")
                     except Exception as pe:
                         st.write(f"Placeholder error: {str(pe)}")
                 else:

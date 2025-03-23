@@ -10,22 +10,6 @@ st.set_page_config(
     layout="wide"
 )
 
-# Add Google Analytics tracking code (after st.set_page_config)
-st.markdown(
-    """
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RVJVWRK9BT"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      
-      gtag('config', 'G-RVJVWRK9BT');
-    </script>
-    """,
-    unsafe_allow_html=True
-)
-
 # File paths
 CASINO_FILE = 'casinos.json'
 DATA_FILE = 'casino_data.json'

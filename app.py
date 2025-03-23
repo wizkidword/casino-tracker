@@ -168,13 +168,10 @@ st.markdown(
     .logo-button-container {
         position: relative;
         width: 125px;
-        height: 125px;
+        height: 125px; /* Ensure the container has enough height for the image */
     }
     /* Target the Streamlit image container */
     div[data-testid="stImage"] {
-        position: absolute;
-        top: 0;
-        left: 0;
         width: 125px;
         height: 125px;
         cursor: pointer;

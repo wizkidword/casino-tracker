@@ -16,7 +16,7 @@ st.markdown(
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
     div[data-testid="stApp"] {
-        background-image: url('https://img.freepik.com/free-photo/arrangement-with-colorful-lights-funfair_23-2148311243.jpg?t=st=1742741634~exp=1742745234~hmac=c737edbe2a7a166df01a16da708a4fceb9f523112b7f22ee38c7586275b11d1c&w=996') !important;
+        background-image: url('https://cdn.pixabay.com/photo/2013/12/12/22/11/game-casino-227586_1280.jpg') !important;
         background-size: cover !important;
         background-attachment: fixed !important;
         background-position: center !important;

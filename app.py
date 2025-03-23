@@ -139,6 +139,9 @@ if 'selected_casino' not in st.session_state:
 
 # Sidebar with centered title
 with st.sidebar:
+    # Debug log for session state
+    st.write(f"Current selected_casino: {st.session_state.get('selected_casino', 'None')}")
+    
     if st.session_state.get('selected_casino') and st.session_state.selected_casino in casinos:
         # Center the header with CSS
         st.markdown(
@@ -157,7 +160,7 @@ with st.sidebar:
     else:
         st.write("Select a casino to view details.")
 
-# Global CSS for logo hover effect, text buttons, and hidden input
+# Global CSS for logo hover effect, text buttons, and hidden button
 st.markdown(
     """
     <style>
@@ -172,7 +175,6 @@ st.markdown(
         width: 125px;
         height: 125px; /* Ensure the container has enough height for the image */
         cursor: pointer; /* Indicate the container is clickable */
-        pointer-events: none; /* Disable pointer events on the container */
     }
     /* Target the Streamlit image container */
     div[data-testid="stImage"] {
@@ -184,8 +186,7 @@ st.markdown(
         background-color: rgba(0, 0, 0, 0.7);
         padding: 5px;
         box-sizing: border-box; /* Ensure padding doesn't increase size */
-        z-index: 1; /* Ensure the image is below the text button */
-        pointer-events: auto; /* Re-enable pointer events on the image */
+        z-index: 1; /* Ensure the image is below the button */
     }
     div[data-testid="stImage"] img {
         width: 100%;
@@ -222,23 +223,18 @@ st.markdown(
         box-shadow: 0 0 10px gold;
         color: white !important;
     }
-    /* Hide the Streamlit button */
+    /* Style the Streamlit button to overlay the image */
     div[data-testid="stButton"] button {
-        display: none !important;
-    }
-    /* Make the logo container clickable by overlaying a transparent button */
-    .logo-button-container {
-        position: relative;
-    }
-    .logo-button-container::after {
-        content: '';
         position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
+        width: 125px;
+        height: 125px;
+        opacity: 0; /* Make the button invisible but clickable */
+        z-index: 2; /* Ensure the button is above the image */
         cursor: pointer;
-        z-index: 2; /* Ensure the overlay is above the image */
+        border: none;
+        background: transparent;
     }
     </style>
     """,
@@ -257,7 +253,7 @@ if casinos:
             logo_path = f"static/{name.lower().replace(' ', '_')}.png"
             placeholder_path = "static/placeholder.png"
             
-            # Wrap the image in a container
+            # Wrap the image and button in a container
             st.markdown(f'<div class="logo-button-container">', unsafe_allow_html=True)
             
             # Load image using st.image
@@ -291,7 +287,7 @@ if casinos:
             st.markdown(
                 f"""
                 <div class="text-button-container">
-                    <a href="{url}" target="_blank" style="text-decoration: none; pointer-events: auto;">
+                    <a href="{url}" target="_blank" style="text-decoration: none;">
                         <div class="casino-button">
                             {name}
                         </div>

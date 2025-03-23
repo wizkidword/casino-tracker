@@ -2,16 +2,27 @@ import streamlit as st
 import json
 import os
 from PIL import Image
-import add_analytics  # Import the script
-
-# Run the script to inject the Google Analytics tag
-add_analytics.add_analytics_tag()
 
 # SEO-friendly title (must be the first Streamlit command)
 st.set_page_config(
     page_title="Best Free Social Casinos & Bonuses for 2025",
     page_icon="🎰",
     layout="wide"
+)
+
+# Add Google Analytics tracking code
+st.components.v1.html(
+    """
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RVJVWRK9BT"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-RVJVWRK9BT');
+    </script>
+    """,
+    height=0  # Set height to 0 since this is a script, not visible content
 )
 
 # File paths

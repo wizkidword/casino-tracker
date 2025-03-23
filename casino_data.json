@@ -1,0 +1,362 @@
+{
+    "Stake": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 0,
+        "gift_cards": 0,
+        "crypto": 45,
+        "vip_system": "Yes",
+        "farm_vip_with_gc": "Yes",
+        "notes": "No Playthrough requirement on daily SC | Farm, redeem, rinse and repeat | Must Have"
+    },
+    "Chumba": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 100,
+        "gift_cards": 10,
+        "crypto": 0,
+        "vip_system": "No",
+        "farm_vip_with_gc": "No",
+        "notes": "Decent bonuses from time to time | Excellent game selection | Quick redemption | Great reputation"
+    },
+    "Ding Ding Ding": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 100,
+        "gift_cards": 100,
+        "crypto": 0,
+        "vip_system": "Yes",
+        "farm_vip_with_gc": "No",
+        "notes": "Lots of Mini-Games and other ways to earn free SC | FUN casino"
+    },
+    "Lucky Land Slots": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 50,
+        "gift_cards": 10,
+        "crypto": 0,
+        "vip_system": "Yes",
+        "farm_vip_with_gc": "Yes",
+        "notes": "Owned by same company as CHUMBA | Nice daily streak | Weekly Quacky Hour sale is a great discount"
+    },
+    "Zula Casino": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 50,
+        "gift_cards": 0,
+        "crypto": 0,
+        "vip_system": "Yes",
+        "farm_vip_with_gc": "No",
+        "notes": "Generous Daily | Lots of freebies | Great Sales | JOKERS JEWELS 5c spins"
+    },
+    "Pulz": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 100,
+        "gift_cards": 10,
+        "crypto": 0,
+        "vip_system": "Yes",
+        "farm_vip_with_gc": "Yes",
+        "notes": "Best for Washing | Tons of Welcome Offers | 10-20% daily offers | Triple Plinko is top tier and one of the best washes"
+    },
+    "Modo": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 100,
+        "gift_cards": 20,
+        "crypto": 0,
+        "vip_system": "Yes",
+        "farm_vip_with_gc": "No",
+        "notes": "Excellent Casino | Quick Redemptions | Great Selection of Games | Good Welcome Offers | Great reputation"
+    },
+    "Real Prize": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 100,
+        "gift_cards": 45,
+        "crypto": 0,
+        "vip_system": "Yes",
+        "farm_vip_with_gc": "Yes",
+        "notes": "Free SC Links Almost Daily | Great Welcome Offers"
+    },
+    "Crown Coins Casino": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 100,
+        "gift_cards": 0,
+        "crypto": 0,
+        "vip_system": "Yes",
+        "farm_vip_with_gc": "Yes",
+        "notes": "Top tier, tons of freebies, nice daily streak that increases with VIP, awesome sales and the best games"
+    },
+    "WoW Vegas": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 100,
+        "gift_cards": 25,
+        "crypto": 0,
+        "vip_system": "Yes",
+        "farm_vip_with_gc": "No",
+        "notes": "Daily Happy Hour Sale is a top tier wash | Free spins given away multiple times a day in chat | "
+    },
+    "The Money Factory": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 100,
+        "gift_cards": 0,
+        "crypto": 0,
+        "vip_system": "No",
+        "farm_vip_with_gc": "No",
+        "notes": "Excellent Welcome Offers | Regular Sales | Fast Skrill Redeem | Reputable Casino | Covered Bacc is top tier"
+    },
+    "Fortune Coins": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 50,
+        "gift_cards": 0,
+        "crypto": 0,
+        "vip_system": "Yes",
+        "farm_vip_with_gc": "No",
+        "notes": "Generous Daily | Lots of freebies | Great Sales | JOKERS JEWELS 5c spins | ZULA Clone"
+    },
+    "Lucky Hands": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 50,
+        "gift_cards": 0,
+        "crypto": 0,
+        "vip_system": "No",
+        "farm_vip_with_gc": "No",
+        "notes": "Very Fast Redemptions | 50 SC Minimum Redeem | Easy to Hit With Welcome Offers"
+    },
+    "Baba Casino": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 100,
+        "gift_cards": 50,
+        "crypto": 0,
+        "vip_system": "Yes",
+        "farm_vip_with_gc": "Yes",
+        "notes": "Good selection of games | Good Deals"
+    },
+    "Spree": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 100,
+        "gift_cards": 10,
+        "crypto": 0,
+        "vip_system": "No",
+        "farm_vip_with_gc": "No",
+        "notes": "Lots of Sales to WASH | Lots of Free Spins | Great Selection of Games and Highly Reputable Casino"
+    },
+    "Hello Millions": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 50,
+        "gift_cards": 10,
+        "crypto": 0,
+        "vip_system": "No",
+        "farm_vip_with_gc": "No",
+        "notes": "McLuck clone | Solid games and sales |"
+    },
+    "High 5 Casino": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 100,
+        "gift_cards": 50,
+        "crypto": 0,
+        "vip_system": "No",
+        "farm_vip_with_gc": "No",
+        "notes": "Regular Sales for Washing | Can get 1005SC for $800 | High 5 Plinko is top tier for WASHING"
+    },
+    "Pulz Bingo": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 100,
+        "gift_cards": 10,
+        "crypto": 0,
+        "vip_system": "Yes",
+        "farm_vip_with_gc": "Yes",
+        "notes": "Exactly the same as Pulsz but with the addition of Bingo | Dont skip"
+    },
+    "Sportzino": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 50,
+        "gift_cards": 0,
+        "crypto": 0,
+        "vip_system": "Yes",
+        "farm_vip_with_gc": "No",
+        "notes": "ZULA Clone Plus Sports Book | Great sales and promotions |"
+    },
+    "Global Poker": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 0,
+        "gift_cards": 0,
+        "crypto": 0,
+        "vip_system": "No",
+        "farm_vip_with_gc": "No",
+        "notes": "Random Dailies | Nice Selection of Games Besides Poker | Good Interface"
+    },
+    "My Prize": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 0,
+        "gift_cards": 0,
+        "crypto": 0,
+        "vip_system": "Yes",
+        "farm_vip_with_gc": "No",
+        "notes": "1 SC Daily but 40x playthrough | Good selection of games | Very Easy KYC"
+    },
+    "McLuck": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 75,
+        "gift_cards": 10,
+        "crypto": 0,
+        "vip_system": "Yes",
+        "farm_vip_with_gc": "Yes",
+        "notes": "Nice VIP System | Can Use GC to Farm VIP | "
+    },
+    "Lucky Bird": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 0,
+        "gift_cards": 0,
+        "crypto": 30,
+        "vip_system": "Yes",
+        "farm_vip_with_gc": "No",
+        "notes": "Very Similar to Stake | Daily Login Reward Goes up to 1SC"
+    },
+    "Golden Hearts": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 100,
+        "gift_cards": 50,
+        "crypto": 0,
+        "vip_system": "No",
+        "farm_vip_with_gc": "No",
+        "notes": "Daily Wheel | Lots of Sales For Washing | Good Rep "
+    },
+    "Mega Bonanza": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 75,
+        "gift_cards": 10,
+        "crypto": 0,
+        "vip_system": "No",
+        "farm_vip_with_gc": "No",
+        "notes": "McLuck clone | Solid games and sales |"
+    },
+    "Sports Millions": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 75,
+        "gift_cards": 10,
+        "crypto": 0,
+        "vip_system": "No",
+        "farm_vip_with_gc": "No",
+        "notes": "McLuck clone | Solid games and sales |"
+    },
+    "Play Fame": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 75,
+        "gift_cards": 10,
+        "crypto": 0,
+        "vip_system": "No",
+        "farm_vip_with_gc": "No",
+        "notes": "McLuck clone | Solid games and sales |"
+    },
+    "Jackpota": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 75,
+        "gift_cards": 10,
+        "crypto": 0,
+        "vip_system": "No",
+        "farm_vip_with_gc": "No",
+        "notes": "McLuck clone | Solid games and sales |"
+    },
+    "Spin Blitz": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 50,
+        "gift_cards": 10,
+        "crypto": 0,
+        "vip_system": "No",
+        "farm_vip_with_gc": "No",
+        "notes": "McLuck clone | Solid games and sales |"
+    },
+    "Funz City": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 100,
+        "gift_cards": 25,
+        "crypto": 0,
+        "vip_system": "Yes",
+        "farm_vip_with_gc": "No",
+        "notes": "Daily Streak and Prize | Great Welcome Offers | Jokers Jewels | Nice VIP System"
+    },
+    "NoLimit Coins": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 100,
+        "gift_cards": 25,
+        "crypto": 0,
+        "vip_system": "Yes",
+        "farm_vip_with_gc": "Yes",
+        "notes": "Site Limits Free Play Wins to 25 So Redeem Gift Cards Here"
+    },
+    "Tao Fortune": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 100,
+        "gift_cards": 25,
+        "crypto": 0,
+        "vip_system": "No",
+        "farm_vip_with_gc": "No",
+        "notes": "Site Limits Free Play Wins to 25 So Redeem Gift Cards Here"
+    },
+    "FunRize": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 100,
+        "gift_cards": 25,
+        "crypto": 0,
+        "vip_system": "Yes",
+        "farm_vip_with_gc": "No",
+        "notes": "NoLimit Clone"
+    },
+    "Fortune Wheelz": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 50,
+        "gift_cards": 25,
+        "crypto": 0,
+        "vip_system": "Yes",
+        "farm_vip_with_gc": "No",
+        "notes": "Daily Wheel Gives More After Purchase | Great Welcome Offers | Jokers Jewels"
+    },
+    "Clubs Poker": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 50,
+        "gift_cards": 50,
+        "crypto": 0,
+        "vip_system": "No",
+        "farm_vip_with_gc": "No",
+        "notes": "Has More Than Just Poker | 50 Cent Daily | Decent Casino"
+    },
+    "Rolling Riches": {
+        "free_daily_sc": "Yes",
+        "daily_amount": 1,
+        "min_cash_redeem": 100,
+        "gift_cards": 0,
+        "crypto": 0,
+        "vip_system": "No",
+        "farm_vip_with_gc": "No",
+        "notes": "Lots of Discounts to Wash | Solid Casino | Great Support & Fast Redemptions"
+    }
+}

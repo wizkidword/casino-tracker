@@ -159,6 +159,12 @@ with st.sidebar:
 st.markdown(
     """
     <style>
+    .casino-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px; /* Add space between rows */
+    }
     .casino-logo {
         position: relative;
         display: inline-block;
@@ -208,7 +214,7 @@ st.markdown(
         border-radius: 5px;
         transition: all 0.3s ease;
         cursor: pointer;
-        margin-top: 5px;
+        margin-top: 10px; /* Increased space between logo and button */
     }
     .casino-button:hover {
         background-color: rgba(255, 215, 0, 0.2);
@@ -226,6 +232,9 @@ if casinos:
     for i, (name, url) in enumerate(casinos.items()):
         col_idx = i % 6
         with cols[col_idx]:
+            # Wrap the logo and button in a container for better spacing
+            st.markdown('<div class="casino-container">', unsafe_allow_html=True)
+            
             logo_path = f"static/{name.lower().replace(' ', '_')}.png"
             placeholder_path = "static/placeholder.png"
             
@@ -266,5 +275,8 @@ if casinos:
                 """,
                 unsafe_allow_html=True
             )
+            
+            # Close the container div
+            st.markdown('</div>', unsafe_allow_html=True)
 else:
     st.write("No casinos yet—check back soon!")

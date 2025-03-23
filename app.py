@@ -186,7 +186,6 @@ st.markdown(
         background-color: rgba(0, 0, 0, 0.7);
         padding: 5px;
         box-sizing: border-box; /* Ensure padding doesn't increase size */
-        z-index: 1; /* Ensure the image is below the button */
     }
     div[data-testid="stImage"] img {
         width: 100%;
@@ -223,18 +222,17 @@ st.markdown(
         box-shadow: 0 0 10px gold;
         color: white !important;
     }
-    /* Style the Streamlit button to overlay the image */
+    /* Style the Streamlit button to look like the image */
     div[data-testid="stButton"] button {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 125px;
-        height: 125px;
-        opacity: 0; /* Make the button invisible but clickable */
-        z-index: 2; /* Ensure the button is above the image */
-        cursor: pointer;
+        padding: 0;
+        margin: 0;
         border: none;
         background: transparent;
+        width: 125px;
+        height: 125px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     </style>
     """,
@@ -253,32 +251,31 @@ if casinos:
             logo_path = f"static/{name.lower().replace(' ', '_')}.png"
             placeholder_path = "static/placeholder.png"
             
-            # Wrap the image and button in a container
+            # Wrap the image in a container
             st.markdown(f'<div class="logo-button-container">', unsafe_allow_html=True)
             
-            # Load image using st.image
-            try:
-                if os.path.exists(logo_path):
-                    st.image(logo_path, width=125, use_container_width=False)
-                else:
-                    st.write(f"Logo not found: {logo_path}")
+            # Wrap the image in a button
+            with st.container():
+                if st.button("", key=f"select_{name}", on_click=lambda n=name: st.session_state.update(selected_casino=n), help="Image button"):
+                    pass  # The on_click callback handles the session state update
+                try:
+                    if os.path.exists(logo_path):
+                        st.image(logo_path, width=125, use_container_width=False)
+                    else:
+                        st.write(f"Logo not found: {logo_path}")
+                        if os.path.exists(placeholder_path):
+                            st.image(placeholder_path, width=125, use_container_width=False, caption="Image unavailable")
+                        else:
+                            st.write("Placeholder not found!")
+                except Exception as e:
+                    st.write(f"Error with {name}: {str(e)}")
                     if os.path.exists(placeholder_path):
-                        st.image(placeholder_path, width=125, use_container_width=False, caption="Image unavailable")
+                        try:
+                            st.image(placeholder_path, width=125, use_container_width=False, caption="Image unavailable")
+                        except Exception as pe:
+                            st.write(f"Placeholder error: {str(pe)}")
                     else:
                         st.write("Placeholder not found!")
-            except Exception as e:
-                st.write(f"Error with {name}: {str(e)}")
-                if os.path.exists(placeholder_path):
-                    try:
-                        st.image(placeholder_path, width=125, use_container_width=False, caption="Image unavailable")
-                    except Exception as pe:
-                        st.write(f"Placeholder error: {str(pe)}")
-                else:
-                    st.write("Placeholder not found!")
-
-            # Add a hidden button to capture the click
-            if st.button("", key=f"select_{name}", on_click=lambda n=name: st.session_state.update(selected_casino=n), help="Hidden button"):
-                pass  # The on_click callback handles the session state update
 
             # Close the logo-button container
             st.markdown('</div>', unsafe_allow_html=True)
@@ -286,12 +283,10 @@ if casinos:
             # Styled text button below the logo (only opens URL in new tab)
             st.markdown(
                 f"""
-                <div class="text-button-container">
-                    <a href="{url}" target="_blank" style="text-decoration: none;" onclick="event.stopPropagation();">
-                        <div class="casino-button">
-                            {name}
-                        </div>
-                    </a>
+                <div class="text-button-container" onclick="event.stopPropagation(); event.preventDefault(); window.open('{url}', '_blank');">
+                    <div class="casino-button">
+                        {name}
+                    </div>
                 </div>
                 """,
                 unsafe_allow_html=True

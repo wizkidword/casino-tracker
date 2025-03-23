@@ -133,21 +133,9 @@ casino_data = load_casino_data()
 # Main content
 st.title("Best Free Social Casinos & Bonuses for 2025")
 
-# Add a hidden input to capture the selected casino
-if 'selected_casino' not in st.session_state:
-    st.session_state.selected_casino = None
-
-# Use a hidden text input to capture the selected casino
-selected_casino = st.text_input("selected_casino", value=st.session_state.selected_casino, key="selected_casino_input", label_visibility="hidden")
-
-# Update the session state when the hidden input changes
-if selected_casino != st.session_state.selected_casino:
-    st.session_state.selected_casino = selected_casino
-    st.experimental_rerun()
-
 # Sidebar with centered title
 with st.sidebar:
-    if st.session_state.selected_casino and st.session_state.selected_casino in casinos:
+    if st.session_state.get('selected_casino') and st.session_state.selected_casino in casinos:
         # Center the header with CSS
         st.markdown(
             f"<h2 style='text-align: center;'>{st.session_state.selected_casino}</h2>",
@@ -165,7 +153,7 @@ with st.sidebar:
     else:
         st.write("Select a casino to view details.")
 
-# Global CSS for logo hover effect, clickable image, and text buttons
+# Global CSS for logo hover effect, button overlay, and text buttons
 st.markdown(
     """
     <style>
@@ -179,7 +167,6 @@ st.markdown(
         position: relative;
         width: 125px;
         height: 125px; /* Ensure the container has enough height for the image */
-        cursor: pointer; /* Make the container clickable */
     }
     /* Target the Streamlit image container */
     div[data-testid="stImage"] {
@@ -191,7 +178,7 @@ st.markdown(
         background-color: rgba(0, 0, 0, 0.7);
         padding: 5px;
         box-sizing: border-box; /* Ensure padding doesn't increase size */
-        z-index: 1; /* Ensure the image is below the text button */
+        z-index: 1; /* Ensure the image is below the button */
     }
     div[data-testid="stImage"] img {
         width: 100%;
@@ -203,9 +190,38 @@ st.markdown(
         opacity: 1;
         box-shadow: 0 0 15px gold, 0 0 30px rgba(255, 215, 0, 0.5);
     }
+    /* Style the button overlay */
+    div[data-testid="stButton"] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 125px;
+        height: 125px;
+        margin: 0 !important;
+        z-index: 2; /* Ensure the button is above the image but below the text button */
+    }
+    div[data-testid="stButton"] button {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 125px;
+        height: 125px;
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        cursor: pointer;
+    }
+    div[data-testid="stButton"] button:hover {
+        background: rgba(0, 0, 0, 0.1) !important;
+    }
+    div[data-testid="stButton"] button:focus {
+        outline: none !important;
+        box-shadow: none !important;
+    }
     /* Style for the text button container */
     .text-button-container {
-        z-index: 2; /* Ensure the text button container is above the logo */
+        z-index: 3; /* Ensure the text button container is above the logo button overlay */
     }
     /* Style for the text buttons below logos */
     .casino-button {
@@ -245,8 +261,8 @@ if casinos:
             logo_path = f"static/{name.lower().replace(' ', '_')}.png"
             placeholder_path = "static/placeholder.png"
             
-            # Wrap the image in a container to control positioning
-            st.markdown(f'<div class="logo-button-container" onclick="streamlitCallback(\'{name}\')">', unsafe_allow_html=True)
+            # Wrap the image and button in a container to control positioning
+            st.markdown('<div class="logo-button-container">', unsafe_allow_html=True)
             
             # Load image using st.image
             try:
@@ -267,6 +283,9 @@ if casinos:
                         st.write(f"Placeholder error: {str(pe)}")
                 else:
                     st.write("Placeholder not found!")
+
+            # Invisible button overlay for click detection (logo click to update sidebar)
+            st.button("", key=f"select_{name}", on_click=lambda n=name: st.session_state.update({'selected_casino': n}))
 
             # Close the logo-button container
             st.markdown('</div>', unsafe_allow_html=True)
@@ -289,31 +308,3 @@ if casinos:
             st.markdown('</div>', unsafe_allow_html=True)
 else:
     st.write("No casinos yet—check back soon!")
-
-# Add JavaScript to handle the click event
-st.markdown(
-    """
-    <script>
-    function streamlitCallback(casinoName) {
-        console.log("Clicked casino: " + casinoName); // Debugging
-        // Set the value of the hidden input
-        const input = document.querySelector('input[name="selected_casino_input"]');
-        if (input) {
-            input.value = casinoName;
-            // Trigger an input event to notify Streamlit
-            const event = new Event('input', { bubbles: true });
-            input.dispatchEvent(event);
-        } else {
-            console.log("Hidden input not found!");
-        }
-        // Force a rerun to update the sidebar
-        setTimeout(() => {
-            window.parent.postMessage({
-                type: 'streamlit:rerun'
-            }, '*');
-        }, 100);
-    }
-    </script>
-    """,
-    unsafe_allow_html=True
-)

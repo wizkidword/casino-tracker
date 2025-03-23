@@ -10,18 +10,20 @@ st.set_page_config(
     layout="wide"
 )
 
-# Add casino-themed background with overlay and text color adjustments
+# Add casino-themed background with overlay, text color adjustments, and thematic font
 st.markdown(
     """
     <style>
-    .stApp {
-        background-image: url('https://images.unsplash.com/photo-1597929447902-80d94c77c50c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-        background-size: cover;
-        background-attachment: fixed;
-        background-position: center;
+    @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+    div[data-testid="stApp"] {
+        background-image: url('https://img.freepik.com/free-photo/arrangement-with-colorful-lights-funfair_23-2148311243.jpg?t=st=1742741634~exp=1742745234~hmac=c737edbe2a7a166df01a16da708a4fceb9f523112b7f22ee38c7586275b11d1c&w=996') !important;
+        background-size: cover !important;
+        background-attachment: fixed !important;
+        background-position: center !important;
+        background-color: #1a1a1a !important; /* Fallback color */
     }
     /* Add a semi-transparent overlay to improve text readability */
-    .stApp::before {
+    div[data-testid="stApp"]::before {
         content: '';
         position: absolute;
         top: 0;
@@ -34,6 +36,12 @@ st.markdown(
     /* Adjust text colors for better contrast */
     h1, h2, h3, p, div, span, a {
         color: #f0f0f0 !important; /* Light gray/white text for readability */
+    }
+    /* Use a thematic font for headers */
+    h1, h2, h3 {
+        font-family: 'Luckiest Guy', cursive !important;
+        color: gold !important;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     }
     /* Style the sidebar with a dark background */
     [data-testid="stSidebar"] {
@@ -157,9 +165,15 @@ st.markdown(
         width: 125px;
         height: 125px;
         cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid gold;
+        border-radius: 10px;
+        background-color: rgba(0, 0, 0, 0.7);
+        padding: 5px;
     }
     .casino-logo:hover {
-        opacity: 0.8;
+        opacity: 1;
+        box-shadow: 0 0 15px gold, 0 0 30px rgba(255, 215, 0, 0.5);
     }
     div[data-testid="stButton"] button {
         position: absolute;

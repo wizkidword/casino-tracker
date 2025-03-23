@@ -137,24 +137,6 @@ st.title("Best Free Social Casinos & Bonuses for 2025")
 if 'selected_casino' not in st.session_state:
     st.session_state.selected_casino = None
 
-# Use a hidden text input to capture the selected casino
-selected_casino = st.text_input(
-    "selected_casino",
-    value=st.session_state.selected_casino if st.session_state.selected_casino else "",
-    key="selected_casino_input",
-    label_visibility="hidden"
-)
-
-# Update the session state when the hidden input changes
-if selected_casino != st.session_state.selected_casino:
-    print(f"Updating selected_casino from {st.session_state.selected_casino} to {selected_casino}")  # Debugging
-    st.session_state.selected_casino = selected_casino
-    print(f"Session state updated: selected_casino = {st.session_state.selected_casino}")  # Debugging
-    st.rerun()
-    print("Rerun triggered")  # Debugging
-else:
-    print(f"No update needed: selected_casino ({selected_casino}) matches session state ({st.session_state.selected_casino})")  # Debugging
-
 # Sidebar with centered title
 with st.sidebar:
     if st.session_state.get('selected_casino') and st.session_state.selected_casino in casinos:
@@ -240,9 +222,23 @@ st.markdown(
         box-shadow: 0 0 10px gold;
         color: white !important;
     }
-    /* Hide the hidden text input */
-    div[data-testid="stTextInput"] {
+    /* Hide the Streamlit button */
+    div[data-testid="stButton"] button {
         display: none !important;
+    }
+    /* Make the logo container clickable by overlaying a transparent button */
+    .logo-button-container {
+        position: relative;
+    }
+    .logo-button-container::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        z-index: 2; /* Ensure the overlay is above the image */
     }
     </style>
     """,
@@ -261,8 +257,8 @@ if casinos:
             logo_path = f"static/{name.lower().replace(' ', '_')}.png"
             placeholder_path = "static/placeholder.png"
             
-            # Wrap the image in a container to control positioning
-            st.markdown(f'<div class="logo-button-container" onclick="streamlitCallback(\'{name}\')">', unsafe_allow_html=True)
+            # Wrap the image in a container
+            st.markdown(f'<div class="logo-button-container">', unsafe_allow_html=True)
             
             # Load image using st.image
             try:
@@ -283,6 +279,10 @@ if casinos:
                         st.write(f"Placeholder error: {str(pe)}")
                 else:
                     st.write("Placeholder not found!")
+
+            # Add a hidden button to capture the click
+            if st.button("", key=f"select_{name}", on_click=lambda n=name: st.session_state.update(selected_casino=n)):
+                pass  # The on_click callback handles the session state update
 
             # Close the logo-button container
             st.markdown('</div>', unsafe_allow_html=True)
@@ -305,87 +305,3 @@ if casinos:
             st.markdown('</div>', unsafe_allow_html=True)
 else:
     st.write("No casinos yet—check back soon!")
-
-# Add JavaScript to handle the click event
-st.markdown(
-    """
-    <script>
-    // Function to find the hidden input with retries
-    function findHiddenInput(callback) {
-        const maxAttempts = 20;
-        let attempts = 0;
-        const interval = setInterval(() => {
-            let input = document.querySelector('input[name="selected_casino_input"]');
-            if (!input) {
-                input = document.querySelector('input[data-testid="stTextInput-selected_casino_input"]');
-            }
-            if (!input) {
-                const inputs = document.querySelectorAll('input');
-                console.log("All inputs found:", inputs);
-                inputs.forEach((inp, idx) => {
-                    console.log(`Input ${idx}:`, inp.outerHTML);
-                });
-            }
-            if (input || attempts >= maxAttempts) {
-                clearInterval(interval);
-                callback(input);
-            }
-            attempts++;
-        }, 500);
-    }
-
-    // Wait for the DOM to be fully loaded
-    document.addEventListener('DOMContentLoaded', function() {
-        window.streamlitCallback = function(casinoName) {
-            console.log("Clicked casino: " + casinoName);
-            findHiddenInput(function(input) {
-                if (input) {
-                    input.value = casinoName;
-                    const event = new Event('input', { bubbles: true });
-                    input.dispatchEvent(event);
-                    const changeEvent = new Event('change', { bubbles: true });
-                    input.dispatchEvent(changeEvent);
-                    console.log("Input value set to: " + input.value);
-                    setTimeout(() => {
-                        window.parent.postMessage({
-                            type: 'streamlit:rerun'
-                        }, '*');
-                        console.log("Rerun message sent");
-                    }, 100);
-                } else {
-                    console.log("Hidden input not found after retries!");
-                }
-            });
-        };
-    });
-
-    // Fallback in case DOMContentLoaded doesn't work
-    setTimeout(() => {
-        if (typeof window.streamlitCallback !== 'function') {
-            window.streamlitCallback = function(casinoName) {
-                console.log("Fallback: Clicked casino: " + casinoName);
-                findHiddenInput(function(input) {
-                    if (input) {
-                        input.value = casinoName;
-                        const event = new Event('input', { bubbles: true });
-                        input.dispatchEvent(event);
-                        const changeEvent = new Event('change', { bubbles: true });
-                        input.dispatchEvent(changeEvent);
-                        console.log("Fallback: Input value set to: " + input.value);
-                        setTimeout(() => {
-                            window.parent.postMessage({
-                                type: 'streamlit:rerun'
-                            }, '*');
-                            console.log("Fallback: Rerun message sent");
-                        }, 100);
-                    } else {
-                        console.log("Fallback: Hidden input not found after retries!");
-                    }
-                });
-            };
-        }
-    }, 2000);
-    </script>
-    """,
-    unsafe_allow_html=True
-)

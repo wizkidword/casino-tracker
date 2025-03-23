@@ -138,13 +138,22 @@ if 'selected_casino' not in st.session_state:
     st.session_state.selected_casino = None
 
 # Use a hidden text input to capture the selected casino
-selected_casino = st.text_input("selected_casino", value=st.session_state.selected_casino, key="selected_casino_input", label_visibility="hidden")
+selected_casino = st.text_input(
+    "selected_casino",
+    value=st.session_state.selected_casino if st.session_state.selected_casino else "",
+    key="selected_casino_input",
+    label_visibility="hidden"
+)
 
 # Update the session state when the hidden input changes
 if selected_casino != st.session_state.selected_casino:
     print(f"Updating selected_casino from {st.session_state.selected_casino} to {selected_casino}")  # Debugging
     st.session_state.selected_casino = selected_casino
+    print(f"Session state updated: selected_casino = {st.session_state.selected_casino}")  # Debugging
     st.rerun()
+    print("Rerun triggered")  # Debugging
+else:
+    print(f"No update needed: selected_casino ({selected_casino}) matches session state ({st.session_state.selected_casino})")  # Debugging
 
 # Sidebar with centered title
 with st.sidebar:
@@ -303,42 +312,79 @@ st.markdown(
     <script>
     // Function to find the hidden input with retries
     function findHiddenInput(callback) {
-        const maxAttempts = 10;
+        const maxAttempts = 20;
         let attempts = 0;
         const interval = setInterval(() => {
-            const input = document.querySelector('input[data-testid="stTextInput-selected_casino_input"]');
+            let input = document.querySelector('input[name="selected_casino_input"]');
+            if (!input) {
+                input = document.querySelector('input[data-testid="stTextInput-selected_casino_input"]');
+            }
+            if (!input) {
+                const inputs = document.querySelectorAll('input');
+                console.log("All inputs found:", inputs);
+                inputs.forEach((inp, idx) => {
+                    console.log(`Input ${idx}:`, inp.outerHTML);
+                });
+            }
             if (input || attempts >= maxAttempts) {
                 clearInterval(interval);
                 callback(input);
             }
             attempts++;
-        }, 500); // Check every 500ms
+        }, 500);
     }
 
     // Wait for the DOM to be fully loaded
     document.addEventListener('DOMContentLoaded', function() {
         window.streamlitCallback = function(casinoName) {
-            console.log("Clicked casino: " + casinoName); // Debugging
-            // Find the hidden input with retries
+            console.log("Clicked casino: " + casinoName);
             findHiddenInput(function(input) {
                 if (input) {
                     input.value = casinoName;
-                    // Trigger an input event to notify Streamlit
                     const event = new Event('input', { bubbles: true });
                     input.dispatchEvent(event);
-                    console.log("Input value set to: " + input.value); // Debugging
-                    // Force a rerun to update the sidebar
+                    const changeEvent = new Event('change', { bubbles: true });
+                    input.dispatchEvent(changeEvent);
+                    console.log("Input value set to: " + input.value);
                     setTimeout(() => {
                         window.parent.postMessage({
                             type: 'streamlit:rerun'
                         }, '*');
+                        console.log("Rerun message sent");
                     }, 100);
                 } else {
-                    console.log("Hidden input not found after retries!"); // Debugging
+                    console.log("Hidden input not found after retries!");
                 }
             });
         };
     });
+
+    // Fallback in case DOMContentLoaded doesn't work
+    setTimeout(() => {
+        if (typeof window.streamlitCallback !== 'function') {
+            window.streamlitCallback = function(casinoName) {
+                console.log("Fallback: Clicked casino: " + casinoName);
+                findHiddenInput(function(input) {
+                    if (input) {
+                        input.value = casinoName;
+                        const event = new Event('input', { bubbles: true });
+                        input.dispatchEvent(event);
+                        const changeEvent = new Event('change', { bubbles: true });
+                        input.dispatchEvent(changeEvent);
+                        console.log("Fallback: Input value set to: " + input.value);
+                        setTimeout(() => {
+                            window.parent.postMessage({
+                                type: 'streamlit:rerun'
+                            }, '*');
+                            console.log("Fallback: Rerun message sent");
+                        }, 100);
+                    } else {
+                        console.log("Fallback: Hidden input not found after retries!");
+                    }
+                });
+            };
+        }
+    }, 2000);
     </script>
     """,
     unsafe_allow_html=True

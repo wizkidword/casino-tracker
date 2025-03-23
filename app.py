@@ -153,7 +153,7 @@ with st.sidebar:
     else:
         st.write("Select a casino to view details.")
 
-# Global CSS for logo hover effect, button overlay, and text buttons
+# Global CSS for logo hover effect and text buttons
 st.markdown(
     """
     <style>
@@ -167,6 +167,8 @@ st.markdown(
         position: relative;
         width: 125px;
         height: 125px; /* Ensure the container has enough height for the image */
+        cursor: pointer; /* Indicate the container is clickable */
+        pointer-events: none; /* Disable pointer events on the container */
     }
     /* Target the Streamlit image container */
     div[data-testid="stImage"] {
@@ -178,7 +180,8 @@ st.markdown(
         background-color: rgba(0, 0, 0, 0.7);
         padding: 5px;
         box-sizing: border-box; /* Ensure padding doesn't increase size */
-        z-index: 1; /* Ensure the image is below the button */
+        z-index: 1; /* Ensure the image is below the text button */
+        pointer-events: auto; /* Re-enable pointer events on the image */
     }
     div[data-testid="stImage"] img {
         width: 100%;
@@ -190,38 +193,9 @@ st.markdown(
         opacity: 1;
         box-shadow: 0 0 15px gold, 0 0 30px rgba(255, 215, 0, 0.5);
     }
-    /* Style the button overlay */
-    div[data-testid="stButton"] {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 125px;
-        height: 125px;
-        margin: 0 !important;
-        z-index: 2; /* Ensure the button is above the image but below the text button */
-    }
-    div[data-testid="stButton"] button {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 125px;
-        height: 125px;
-        background: transparent !important;
-        border: none !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        cursor: pointer;
-    }
-    div[data-testid="stButton"] button:hover {
-        background: rgba(0, 0, 0, 0.1) !important;
-    }
-    div[data-testid="stButton"] button:focus {
-        outline: none !important;
-        box-shadow: none !important;
-    }
     /* Style for the text button container */
     .text-button-container {
-        z-index: 3; /* Ensure the text button container is above the logo button overlay */
+        z-index: 2; /* Ensure the text button container is above the logo */
     }
     /* Style for the text buttons below logos */
     .casino-button {
@@ -261,8 +235,8 @@ if casinos:
             logo_path = f"static/{name.lower().replace(' ', '_')}.png"
             placeholder_path = "static/placeholder.png"
             
-            # Wrap the image and button in a container to control positioning
-            st.markdown('<div class="logo-button-container">', unsafe_allow_html=True)
+            # Wrap the image in a container to control positioning
+            st.markdown(f'<div class="logo-button-container" onclick="streamlitCallback(\'{name}\')">', unsafe_allow_html=True)
             
             # Load image using st.image
             try:
@@ -283,9 +257,6 @@ if casinos:
                         st.write(f"Placeholder error: {str(pe)}")
                 else:
                     st.write("Placeholder not found!")
-
-            # Invisible button overlay for click detection (logo click to update sidebar)
-            st.button("", key=f"select_{name}", on_click=lambda n=name: st.session_state.update({'selected_casino': n}))
 
             # Close the logo-button container
             st.markdown('</div>', unsafe_allow_html=True)
@@ -308,3 +279,30 @@ if casinos:
             st.markdown('</div>', unsafe_allow_html=True)
 else:
     st.write("No casinos yet—check back soon!")
+
+# Add JavaScript to handle the click event
+st.markdown(
+    """
+    <script>
+    // Wait for the DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        window.streamlitCallback = function(casinoName) {
+            console.log("Clicked casino: " + casinoName); // Debugging
+            // Update Streamlit session state
+            window.parent.postMessage({
+                type: 'streamlit:set_component_value',
+                key: 'selected_casino',
+                value: casinoName
+            }, '*');
+            // Force a rerun to update the sidebar
+            setTimeout(() => {
+                window.parent.postMessage({
+                    type: 'streamlit:rerun'
+                }, '*');
+            }, 100);
+        };
+    });
+    </script>
+    """,
+    unsafe_allow_html=True
+)

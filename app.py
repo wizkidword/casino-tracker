@@ -252,24 +252,19 @@ if casinos:
                 else:
                     st.write("Placeholder not found!")
 
-            # Invisible button overlay for click detection (logo click)
+            # Invisible button overlay for click detection (logo click to update sidebar)
             st.button("", key=f"select_{name}", on_click=lambda n=name: st.session_state.update({'selected_casino': n}))
 
-            # Styled text button below the logo
+            # Styled text button below the logo (only opens URL in new tab)
             st.markdown(
                 f"""
                 <a href="{url}" target="_blank" style="text-decoration: none;">
-                    <div class="casino-button" onclick="document.getElementById('text_select_{name}').click();">
+                    <div class="casino-button">
                         {name}
                     </div>
                 </a>
-                <script>
-                    document.getElementById('text_select_{name}').style.display = 'none';
-                </script>
                 """,
                 unsafe_allow_html=True
             )
-            # Hidden button to handle the session state update when the text button is clicked
-            st.button("", key=f"text_select_{name}", on_click=lambda n=name: st.session_state.update({'selected_casino': n}), help="Hidden button for text click")
 else:
     st.write("No casinos yet—check back soon!")

@@ -14,12 +14,13 @@ st.set_page_config(
 st.markdown(
     """
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1XSXPYSSWN"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RVJVWRK9BT"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-1XSXPYSSWN');
+      
+      gtag('config', 'G-RVJVWRK9BT');
     </script>
     """,
     unsafe_allow_html=True

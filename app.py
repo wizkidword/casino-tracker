@@ -133,6 +133,18 @@ casino_data = load_casino_data()
 # Main content
 st.title("Best Free Social Casinos & Bonuses for 2025")
 
+# Add a hidden input to capture the selected casino
+if 'selected_casino' not in st.session_state:
+    st.session_state.selected_casino = None
+
+# Use a hidden text input to capture the selected casino
+selected_casino = st.text_input("selected_casino", value=st.session_state.selected_casino, key="selected_casino_input", label_visibility="hidden")
+
+# Update the session state when the hidden input changes
+if selected_casino != st.session_state.selected_casino:
+    st.session_state.selected_casino = selected_casino
+    st.rerun()
+
 # Sidebar with centered title
 with st.sidebar:
     if st.session_state.get('selected_casino') and st.session_state.selected_casino in casinos:
@@ -153,7 +165,7 @@ with st.sidebar:
     else:
         st.write("Select a casino to view details.")
 
-# Global CSS for logo hover effect and text buttons
+# Global CSS for logo hover effect, text buttons, and hidden input
 st.markdown(
     """
     <style>
@@ -217,6 +229,10 @@ st.markdown(
         background-color: rgba(255, 215, 0, 0.2);
         box-shadow: 0 0 10px gold;
         color: white !important;
+    }
+    /* Hide the hidden text input */
+    div[data-testid="stTextInput"][data-testid="stTextInput-selected_casino_input"] {
+        display: none !important;
     }
     </style>
     """,
@@ -288,12 +304,17 @@ st.markdown(
     document.addEventListener('DOMContentLoaded', function() {
         window.streamlitCallback = function(casinoName) {
             console.log("Clicked casino: " + casinoName); // Debugging
-            // Update Streamlit session state
-            window.parent.postMessage({
-                type: 'streamlit:set_component_value',
-                key: 'selected_casino',
-                value: casinoName
-            }, '*');
+            // Find the hidden input
+            const input = document.querySelector('input[aria-label="selected_casino"]');
+            if (input) {
+                input.value = casinoName;
+                // Trigger an input event to notify Streamlit
+                const event = new Event('input', { bubbles: true });
+                input.dispatchEvent(event);
+                console.log("Input value set to: " + input.value); // Debugging
+            } else {
+                console.log("Hidden input not found!"); // Debugging
+            }
             // Force a rerun to update the sidebar
             setTimeout(() => {
                 window.parent.postMessage({

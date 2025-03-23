@@ -1,2 +1,2 @@
-streamlit>=1.38.0
+gradio==4.44.0
 pillow

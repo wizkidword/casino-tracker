@@ -175,26 +175,14 @@ st.markdown(
         width: 125px;
         height: 125px; /* Ensure the container has enough height for the image */
         cursor: pointer; /* Indicate the container is clickable */
-    }
-    /* Target the Streamlit image container */
-    div[data-testid="stImage"] {
-        width: 125px;
-        height: 125px;
         transition: all 0.3s ease;
         border: 2px solid gold;
         border-radius: 10px;
         background-color: rgba(0, 0, 0, 0.7);
         padding: 5px;
         box-sizing: border-box; /* Ensure padding doesn't increase size */
-        z-index: 1; /* Ensure the image is below the button */
     }
-    div[data-testid="stImage"] img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain; /* Ensure the image fits within the container */
-        border-radius: 8px; /* Match the border-radius of the container */
-    }
-    div[data-testid="stImage"]:hover {
+    .logo-button-container:hover {
         opacity: 1;
         box-shadow: 0 0 15px gold, 0 0 30px rgba(255, 215, 0, 0.5);
     }
@@ -223,18 +211,9 @@ st.markdown(
         box-shadow: 0 0 10px gold;
         color: white !important;
     }
-    /* Style the Streamlit button to overlay the image */
+    /* Hide the Streamlit button */
     div[data-testid="stButton"] button {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 125px;
-        height: 125px;
-        opacity: 0; /* Make the button invisible but clickable */
-        z-index: 2; /* Ensure the button is above the image */
-        cursor: pointer;
-        border: none;
-        background: transparent;
+        display: none !important;
     }
     </style>
     """,
@@ -253,31 +232,36 @@ if casinos:
             logo_path = f"static/{name.lower().replace(' ', '_')}.png"
             placeholder_path = "static/placeholder.png"
             
-            # Wrap the image and button in a container
-            st.markdown(f'<div class="logo-button-container">', unsafe_allow_html=True)
+            # Use a key to track which casino was clicked
+            click_key = f"click_{name}"
+            if click_key not in st.session_state:
+                st.session_state[click_key] = False
+
+            # Wrap the image in a clickable div
+            st.markdown(f'<div class="logo-button-container" onclick="document.getElementById(\'btn_{name}\').click();">', unsafe_allow_html=True)
             
-            # Load image using st.image
+            # Load image using st.markdown instead of st.image
             try:
                 if os.path.exists(logo_path):
-                    st.image(logo_path, width=125, use_container_width=False)
+                    st.markdown(f'<img src="{logo_path}" style="width: 125px; height: 125px; object-fit: contain; border-radius: 8px;" />', unsafe_allow_html=True)
                 else:
                     st.write(f"Logo not found: {logo_path}")
                     if os.path.exists(placeholder_path):
-                        st.image(placeholder_path, width=125, use_container_width=False, caption="Image unavailable")
+                        st.markdown(f'<img src="{placeholder_path}" style="width: 125px; height: 125px; object-fit: contain; border-radius: 8px;" />', unsafe_allow_html=True)
                     else:
                         st.write("Placeholder not found!")
             except Exception as e:
                 st.write(f"Error with {name}: {str(e)}")
                 if os.path.exists(placeholder_path):
                     try:
-                        st.image(placeholder_path, width=125, use_container_width=False, caption="Image unavailable")
+                        st.markdown(f'<img src="{placeholder_path}" style="width: 125px; height: 125px; object-fit: contain; border-radius: 8px;" />', unsafe_allow_html=True)
                     except Exception as pe:
                         st.write(f"Placeholder error: {str(pe)}")
                 else:
                     st.write("Placeholder not found!")
 
             # Add a hidden button to capture the click
-            if st.button("", key=f"select_{name}", on_click=lambda n=name: st.session_state.update(selected_casino=n)):
+            if st.button("", key=f"select_{name}", on_click=lambda n=name: st.session_state.update(selected_casino=n), help="Hidden button"):
                 pass  # The on_click callback handles the session state update
 
             # Close the logo-button container
@@ -287,7 +271,7 @@ if casinos:
             st.markdown(
                 f"""
                 <div class="text-button-container">
-                    <a href="{url}" target="_blank" style="text-decoration: none;">
+                    <a href="{url}" target="_blank" style="text-decoration: none;" onclick="event.stopPropagation();">
                         <div class="casino-button">
                             {name}
                         </div>
@@ -301,3 +285,23 @@ if casinos:
             st.markdown('</div>', unsafe_allow_html=True)
 else:
     st.write("No casinos yet—check back soon!")
+
+# Add JavaScript to set button IDs
+st.markdown(
+    """
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Find all Streamlit buttons and set their IDs
+        const buttons = document.querySelectorAll('div[data-testid="stButton"] button');
+        buttons.forEach(button => {
+            const parentDiv = button.closest('div[data-testid="stButton"]');
+            if (parentDiv) {
+                const key = parentDiv.getAttribute('data-testid').replace('stButton-', '');
+                button.setAttribute('id', 'btn_' + key.replace('select_', ''));
+            }
+        });
+    });
+    </script>
+    """,
+    unsafe_allow_html=True
+)

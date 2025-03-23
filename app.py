@@ -2,6 +2,10 @@ import streamlit as st
 import json
 import os
 from PIL import Image
+import add_analytics  # Import the script
+
+# Run the script to inject the Google Analytics tag
+add_analytics.add_analytics_tag()
 
 # SEO-friendly title (must be the first Streamlit command)
 st.set_page_config(
